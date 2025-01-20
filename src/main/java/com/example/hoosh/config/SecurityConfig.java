@@ -2,6 +2,7 @@ package com.example.hoosh.config;
 
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.http.HttpMethod;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.config.annotation.authentication.builders.AuthenticationManagerBuilder;
 import org.springframework.security.config.annotation.method.configuration.EnableGlobalMethodSecurity;
@@ -20,9 +21,9 @@ public class SecurityConfig {
     public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
         // Allow all users to logout
         http.authorizeHttpRequests(authz -> authz
-                .requestMatchers("/authentication/**").permitAll()
-                .requestMatchers("/h2/**").permitAll()
-                .anyRequest().authenticated());
+                .requestMatchers(HttpMethod.POST).permitAll()
+                .requestMatchers(HttpMethod.POST, "/article").permitAll()
+                .anyRequest().permitAll());
         return http.build();
     }
 
