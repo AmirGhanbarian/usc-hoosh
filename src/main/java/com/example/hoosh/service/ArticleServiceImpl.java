@@ -24,9 +24,16 @@ public class ArticleServiceImpl implements ArticleService{
 
     }
 
+
+    public List<Article> getUnSubmittedArticles(){
+        return articleRepository.findByState(0);
+    }
+
+
+
     @Override
     public Article create(Article article) {
-        return null;
+        return articleRepository.save(article);
     }
 
     @Override

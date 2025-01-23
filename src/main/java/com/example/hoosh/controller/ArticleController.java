@@ -55,9 +55,27 @@ public class ArticleController {
 
     }
 
+
+    @GetMapping("/unSubmitted")
+    public ResponseEntity<HashMap<String, Object>> getRequests() {
+
+        HashMap<String, Object> output = new HashMap<>();
+        output.put("articles", articleRepository.findAll());
+        return new ResponseEntity<>(output, HttpStatusCode.valueOf(200));
+
+    }
+
     @PostMapping
     public ResponseEntity<HashMap<String, Object>> save(@RequestBody ArticleWithAttachmentsDTO articleWithAttachmentsDTO) {
         Article savedArticle = articleService.saveArticleWithAttachments(articleWithAttachmentsDTO);
+        HashMap<String, Object> output = new HashMap<>();
+        output.put("saved_article", savedArticle);
+        return new ResponseEntity<>(output, HttpStatusCode.valueOf(200));
+    }
+
+    @PostMapping("/save")
+    public ResponseEntity<HashMap<String, Object>> saveArticle(@RequestBody Article article) {
+        Article savedArticle = articleService.create(article);
         HashMap<String, Object> output = new HashMap<>();
         output.put("saved_article", savedArticle);
         return new ResponseEntity<>(output, HttpStatusCode.valueOf(200));

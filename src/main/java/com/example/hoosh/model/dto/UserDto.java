@@ -4,6 +4,8 @@ import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
+import java.util.List;
+
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
@@ -15,6 +17,16 @@ public class UserDto {
     private String email;
     private String password;
     private String confirmPassword;
+    private List<String> roles;
+
+
+    public List<String> getRoles() {
+        return roles;
+    }
+
+    public void setRoles(List<String> roles) {
+        this.roles = roles;
+    }
 
     public String getFirstName() {
         return firstName;

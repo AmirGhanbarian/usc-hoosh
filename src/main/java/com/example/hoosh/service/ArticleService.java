@@ -11,6 +11,8 @@ import java.util.*;
 public interface ArticleService {
     Article create(Article article);
 
+    List<Article> getUnSubmittedArticles();
+
     Article getById(String id);
 
     List<Article> getAllArticles();

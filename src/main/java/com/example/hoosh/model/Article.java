@@ -26,13 +26,21 @@ public class Article {
     private String content;
     private String author;
     private LocalDateTime createdAt;
-    private List<String> attachmentIds; // List of attachment IDs
-
+    private List<String> attachmentIds;
+    private byte state;
 
         public Article() {
             this.createdAt = LocalDateTime.now();
         }
 
+
+    public byte getState() {
+        return state;
+    }
+
+    public void setState(byte state) {
+        this.state = state;
+    }
 
     public Article(String title, String content, String author) {
         this.title = title;
