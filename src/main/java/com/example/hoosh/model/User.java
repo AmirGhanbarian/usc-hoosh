@@ -3,6 +3,8 @@ package com.example.hoosh.model;
 import org.springframework.data.annotation.Id;
 import org.springframework.data.mongodb.core.mapping.Document;
 
+import java.util.List;
+
 @Document(collection = "users")
 public class User {
 
@@ -13,6 +15,7 @@ public class User {
     private String lastName;
     private String email;
     private String password;
+    private List<String> roles;
 
     // Constructors
     public User() {
@@ -24,7 +27,16 @@ public class User {
         this.password = password;
     }
 
+
     // Getters and Setters
+    public List<String> getRoles() {
+        return roles;
+    }
+
+    public void setRoles(List<String> roles) {
+        this.roles = roles;
+    }
+
     public String getId() {
         return id;
     }

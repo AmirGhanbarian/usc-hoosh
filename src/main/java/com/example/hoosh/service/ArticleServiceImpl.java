@@ -57,6 +57,11 @@ public class ArticleServiceImpl implements ArticleService{
 
     }
 
+    public Article save(Article article) throws RuntimeException {
+        return articleRepository.save(article);
+    }
+
+
     public Article saveArticleWithAttachments(ArticleWithAttachmentsDTO articleDTO) {
         Article article = new Article();
         article.setTitle(articleDTO.getTitle());

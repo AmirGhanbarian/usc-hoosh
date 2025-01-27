@@ -20,7 +20,7 @@ public class Article {
     @Id
     private String id;
 
-    @Indexed(unique = true)
+    @Indexed(unique = true, name = "title")
     private String title;
 
     private String content;
@@ -29,9 +29,9 @@ public class Article {
     private List<String> attachmentIds; // List of attachment IDs
 
 
-        public Article() {
-            this.createdAt = LocalDateTime.now();
-        }
+    public Article() {
+        this.createdAt = LocalDateTime.now();
+    }
 
 
     public Article(String title, String content, String author) {

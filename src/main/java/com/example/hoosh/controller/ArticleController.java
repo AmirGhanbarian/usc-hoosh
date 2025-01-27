@@ -1,26 +1,19 @@
 package com.example.hoosh.controller;
 
 import com.example.hoosh.model.Article;
-import com.example.hoosh.model.Attachment;
-import com.example.hoosh.model.dto.ArticleWithAttachmentsDTO;
 import com.example.hoosh.repository.ArticleRepository;
 import com.example.hoosh.repository.AttachmentRepository;
 import com.example.hoosh.service.ArticleService;
 import com.example.hoosh.service.AttachmentService;
-import lombok.Getter;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.context.annotation.Configuration;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
-import org.springframework.http.HttpStatus;
 import org.springframework.http.HttpStatusCode;
 import org.springframework.http.ResponseEntity;
-import org.springframework.stereotype.Service;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.HashMap;
-import java.util.Map;
 
 @RestController
 @RequestMapping("/article")
@@ -55,12 +48,17 @@ public class ArticleController {
 
     }
 
-    @PostMapping
-    public ResponseEntity<HashMap<String, Object>> save(@RequestBody ArticleWithAttachmentsDTO articleWithAttachmentsDTO) {
-        Article savedArticle = articleService.saveArticleWithAttachments(articleWithAttachmentsDTO);
+    @PostMapping("/save")
+    public ResponseEntity<HashMap<String, Object>> save(@RequestBody Article articleWithAttachmentsDTO) {
         HashMap<String, Object> output = new HashMap<>();
-        output.put("saved_article", savedArticle);
-        return new ResponseEntity<>(output, HttpStatusCode.valueOf(200));
+        try {
+            Article savedArticle = articleService.save(articleWithAttachmentsDTO);
+            output.put("saved_article", savedArticle);
+            return new ResponseEntity<>(output, HttpStatusCode.valueOf(200));
+        } catch (RuntimeException e) {
+            output.put("errorMessage", "Title already exists");
+            return new ResponseEntity<>(output, HttpStatusCode.valueOf(500));
+        }
     }
 
     @PutMapping

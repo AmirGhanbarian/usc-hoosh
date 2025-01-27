@@ -1,7 +1,7 @@
 package com.example.hoosh.service;
 
-import com.example.hoosh.model.User;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.core.userdetails.User;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
@@ -17,14 +17,12 @@ public class CustomUserDetailsService implements UserDetailsService {
         this.userService = userService;
     }
 
+    @Override
     public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
-        User applicationUser =
-                userService.findByUsername(username);
-        if (applicationUser == null) {
-            throw new UsernameNotFoundException("User with username " + username + " does not exists");
-        }
-        UserDetails userDetails =
-                org.springframework.security.core.userdetails.User.withUsername(username).password(applicationUser.getPassword()).roles("USER").disabled(false).build();
+        var foundUser = userService.findByUsername(username);
+        UserDetails userDetails = User.withUsername(foundUser.getUsername())
+                .password(foundUser.getPassword())
+                .build();
         return userDetails;
     }
 }
