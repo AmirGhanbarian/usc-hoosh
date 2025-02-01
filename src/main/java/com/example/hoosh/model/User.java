@@ -2,40 +2,25 @@ package com.example.hoosh.model;
 
 import org.springframework.data.annotation.Id;
 import org.springframework.data.mongodb.core.mapping.Document;
-
+import org.springframework.security.core.GrantedAuthority;
+import org.springframework.security.core.authority.SimpleGrantedAuthority;
+import org.springframework.security.core.userdetails.UserDetails;
+import java.util.Collection;
 import java.util.List;
 
-@Document(collection = "users")
-public class User {
 
+
+import lombok.Data;
+
+
+@Document(collection = "users")
+public class User implements UserDetails {
     @Id
     private String id;
     private String username;
-    private String firstName;
-    private String lastName;
-    private String email;
     private String password;
-    private List<String> roles;
-
-    // Constructors
-    public User() {
-    }
-
-    public User(String username, String email, String password) {
-        this.username = username;
-        this.email = email;
-        this.password = password;
-    }
-
-
-    // Getters and Setters
-    public List<String> getRoles() {
-        return roles;
-    }
-
-    public void setRoles(List<String> roles) {
-        this.roles = roles;
-    }
+    private List<String> roles; // e.g., ["ADMIN", "USER"]
+    private boolean enabled = true;
 
     public String getId() {
         return id;
@@ -45,6 +30,7 @@ public class User {
         this.id = id;
     }
 
+    @Override
     public String getUsername() {
         return username;
     }
@@ -53,14 +39,7 @@ public class User {
         this.username = username;
     }
 
-    public String getEmail() {
-        return email;
-    }
-
-    public void setEmail(String email) {
-        this.email = email;
-    }
-
+    @Override
     public String getPassword() {
         return password;
     }
@@ -69,31 +48,44 @@ public class User {
         this.password = password;
     }
 
-    public String getFirstName() {
-        return firstName;
+    public List<String> getRoles() {
+        return roles;
     }
 
-    public User setFirstName(String firstName) {
-        this.firstName = firstName;
-        return this;
+    public void setRoles(List<String> roles) {
+        this.roles = roles;
     }
 
-    public String getLastName() {
-        return lastName;
+    public void setEnabled(boolean enabled) {
+        this.enabled = enabled;
     }
 
-    public User setLastName(String lastName) {
-        this.lastName = lastName;
-        return this;
-    }
-
-    // toString method
     @Override
-    public String toString() {
-        return "User{" +
-                "id='" + id + '\'' +
-                ", username='" + username + '\'' +
-                ", email='" + email + '\'' +
-                '}';
+    public Collection<? extends GrantedAuthority> getAuthorities() {
+        return roles.stream()
+                .map(role -> new SimpleGrantedAuthority("ROLE_" + role))
+                .toList();
+    }
+
+
+
+    @Override
+    public boolean isAccountNonExpired() {
+        return true;
+    }
+
+    @Override
+    public boolean isAccountNonLocked() {
+        return true;
+    }
+
+    @Override
+    public boolean isCredentialsNonExpired() {
+        return true;
+    }
+
+    @Override
+    public boolean isEnabled() {
+        return enabled;
     }
 }
